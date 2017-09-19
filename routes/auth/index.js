@@ -24,6 +24,10 @@ router.post( '/', ( req, res ) => {
 			return res.status( 401 ).send( { auth : false, token : null } );
 		}
 
+
+		user.lastLogin = Date.now();
+		user.save();
+
 		let token = tokenUtil.sign( { id : user._id }, 86400 );
 		res.status( 200 ).send( { auth : true, token : token } );
 	} );
