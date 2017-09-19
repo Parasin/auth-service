@@ -78,11 +78,11 @@ router.post( '/', ( req, res ) => {
 	let user = new User( body );
 
 	/* TODO add data validation to body */
-	user.save( ( err, result ) => {
+	user.save( ( err, user ) => {
 		if ( err ) {
 			return res.status( 500 ).send( err );
 		} else {
-			let token = tokenUtil.sign( { id : result._id, username : result.userName }, 86400 );
+			let token = tokenUtil.sign( { id : user._id, userName : user.userName }, 86400 );
 			return res.status( 201 ).send( { auth : true, token : token } );
 		}
 	} );
