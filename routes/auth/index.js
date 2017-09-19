@@ -1,6 +1,5 @@
 const User      = require( '../../models/user/' ),
-			tokenUtil = require( '../../lib/token.js' ),
-      bcrypt    = require( 'bcrypt' );
+			tokenUtil = require( '../../lib/token.js' );
 
 let express = require( 'express' ),
 		router  = express.Router();
@@ -21,20 +20,13 @@ router.post( '/', ( req, res ) => {
 			return res.status( 404 ).send( 'No user found.' );
 		}
 
-		let passwordIsValid = bcrypt.compareSync( req.body.password, user.password );
-
-		if ( !passwordIsValid ) {
+		if ( user.comparePass( req.body.password ) ) {
 			return res.status( 401 ).send( { auth : false, token : null } );
 		}
 
 		let token = tokenUtil.sign( { id : user._id }, 86400 );
 		res.status( 200 ).send( { auth : true, token : token } );
 	} );
-} );
-
-//DELETE
-router.delete( '/', tokenUtil.isAuthenticated, ( req, res, next ) => {
-
 } );
 
 module.exports = router;

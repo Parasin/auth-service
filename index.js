@@ -8,12 +8,8 @@ const mongoose   = require( 'mongoose' ),
 			rfs        = require( 'rotating-file-stream' );
 
 let fs            = require( 'fs' ),
-		logDirectory  = path.join( __dirname, 'log' ),
-		passport      = require( 'passport' ),
-		LocalStrategy = require( 'passport-local' ).Strategy,
-		User          = require( './models/user' );
+		logDirectory  = path.join( __dirname, 'log' );
 
-// const token      = require( 'auth-middleware' )( config.authUrl );
 mongoose.Promise = global.Promise;
 
 fs.existsSync( logDirectory ) || fs.mkdirSync( logDirectory );
@@ -30,11 +26,11 @@ mongoose.connect( config.dbUrl, {
 
 	let app             = express(),
 			accessLogStream = rfs( 'access.log', {
-				interval : '1d', // rotate daily
+				interval : '1d',
 				path     : logDirectory
 			} );
 
-	app.use( morgan( 'dev', { stream : accessLogStream } ) ); // log every request to the console
+	app.use( morgan( 'dev', { stream : accessLogStream } ) );
 
 	app.use( bodyParser.urlencoded( {
 		extended : false,
@@ -42,27 +38,6 @@ mongoose.connect( config.dbUrl, {
 	} ) );
 
 	app.use( bodyParser.json( { limit : '20mb' } ) );
-
-	//app.use( token.validate );
-
-	app.use(passport.initialize());
-
-	passport.use( new LocalStrategy(
-			function ( userName, password, done ) {
-				User.findOne( { userName : userName }, function ( err, user ) {
-					if ( err ) {
-						return done( err );
-					}
-					if ( !user ) {
-						return done( null, false, { message : 'Incorrect username.' } );
-					}
-					if ( !user.validPassword( password ) ) {
-						return done( null, false, { message : 'Incorrect password.' } );
-					}
-					return done( null, user );
-				} );
-			}
-	) );
 
 	routes( app );
 
