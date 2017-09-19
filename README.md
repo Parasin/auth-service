@@ -16,5 +16,5 @@ To use this service, simply clone the repo, and run the `npm install` command in
 |       |     /    |  POST  |  N/A  | Authentication status, and JWT        |
 |       |   /:id   |   PUT  |  JWT  | Number of records modified            |
 |       |   /:id   | DELETE |  JWT  | MongoDB document for deleted user     |
-| Auth  |     /    |  POST  |  JWT  | Authentication status, and JWT |
+| Auth  |     /    |  POST  |  N/A  | Authentication status, and JWT |
 
