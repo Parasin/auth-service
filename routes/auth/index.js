@@ -20,7 +20,7 @@ router.post( '/', ( req, res ) => {
 			return res.status( 404 ).send( 'No user found.' );
 		}
 
-		if ( user.comparePass( req.body.password ) ) {
+		if ( !user.comparePass( req.body.password ) ) {
 			return res.status( 401 ).send( { auth : false, token : null } );
 		}
 
