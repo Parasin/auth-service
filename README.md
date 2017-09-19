@@ -10,10 +10,11 @@ To use this service, simply clone the repo, and run the `npm install` command in
 
 ## API Endpoints
 | Route | Endpoint | Method | Input |                 Output                |
-|:-----:|:--------:|:------:|:-----:|:-------------------------------------:|
+|:-----:|:--------:|:------:|:-----:|:------------------------------------- |
 | User  |     /    |   GET  |  JWT  | MongoDB document for current user     |
 |       |   /:id   |   GET  |  JWT  | MongoDB document for User matching ID |
 |       |     /    |  POST  |  N/A  | Authentication status, and JWT        |
 |       |   /:id   |   PUT  |  JWT  | Number of records modified            |
 |       |   /:id   | DELETE |  JWT  | MongoDB document for deleted user     |
+| Auth  |     /    |  POST  |  JWT  | Authentication status, and JWT |
 
