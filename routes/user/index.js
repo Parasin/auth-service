@@ -36,7 +36,15 @@ router.get( '/:id', tokenUtil.isAuthenticated, ( req, res ) => {
 
 //PUT :id
 router.put( '/:id', tokenUtil.isAuthenticated, ( req, res ) => {
-	User.update( { _id : req.params.id }, ( err, user ) => {
+	let body = req.body;
+
+	if ( !body ) {
+		return res.status( 400 ).send( {
+			error   : 'Invalid request; missing user data'
+		} );
+	}
+
+	User.update( { _id : req.params.id }, req.body, ( err, user ) => {
 		if ( err ) {
 			return res.status( 500 ).send( err );
 		} else if ( !user ) {
