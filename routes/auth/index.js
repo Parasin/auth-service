@@ -24,11 +24,6 @@ router.post( '/', ( req, res ) => {
 		if ( !passwordIsValid ) {
 			return res.status( 401 ).send( { auth : false, token : null } );
 		}
-/*
-		if ( !user.comparePass( req.body.password ) ) {
-			return res.status( 401 ).send( { auth : false, token : null } );
-		}*/
-
 
 		user.lastLogin = Date.now();
 		user.save();
