@@ -50,11 +50,10 @@ let userSchema = mongoose.Schema( {
 	}
 } );
 
-userSchema.pre( 'save', function ( next ) {
+userSchema.methods.hashPass = function () {
 	this.password = bcrypt.hashSync( this.password, 8 );
-	next();
-} );
-
+	return this;
+};
 
 userSchema.methods.toJSON = function () {
 	let obj = this.toObject();

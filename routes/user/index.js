@@ -10,7 +10,7 @@ let express = require( 'express' ),
 
 //GET
 router.get( '/', tokenUtil.isAuthenticated, ( req, res ) => {
-	User.findById( req.accessToken.id, ( err, user ) => {
+	User.findById( req.accessToken._id, ( err, user ) => {
 		if ( err ) {
 			return res.status( 500 ).send( { error : 'Problem finding user' } );
 		} else if ( !user ) {
@@ -40,7 +40,7 @@ router.put( '/:id', tokenUtil.isAuthenticated, ( req, res ) => {
 
 	if ( !body ) {
 		return res.status( 400 ).send( {
-			error   : 'Invalid request; missing user data'
+			error : 'Invalid request; missing user data'
 		} );
 	}
 
@@ -79,18 +79,19 @@ router.post( '/', ( req, res ) => {
 
 	if ( !body ) {
 		return res.status( 400 ).send( {
-			error   : 'Invalid request; missing user data'
+			error : 'Invalid request; missing user data'
 		} );
 	}
 
 	let user = new User( body );
 
-	/* TODO add data validation to body */
+	user = user.hashPass();
+
 	user.save( ( err, user ) => {
 		if ( err ) {
 			return res.status( 500 ).send( err );
 		} else {
-			let token = tokenUtil.sign( { id : user._id, userName : user.userName }, 86400 );
+			let token = tokenUtil.sign( user.toJSON(), 86400 );
 			return res.status( 201 ).send( { auth : true, token : token } );
 		}
 	} );
