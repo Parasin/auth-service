@@ -1,8 +1,6 @@
-/* TODO Import auth user model and connect to routes */
-
 const config = require( '../config' ),
-			User   = require( './User' ),
-			Auth   = require( './Auth' );
+			User   = require( './user' ),
+			Auth   = require( './auth' );
 
 let routes = ( app ) => {
 	app.use( ( req, res, next ) => {
