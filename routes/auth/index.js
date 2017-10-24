@@ -29,7 +29,7 @@ router.post( '/', ( req, res ) => {
 		user.save();
 
 		let token = tokenUtil.sign( user.toJSON(), 86400 );
-		res.status( 200 ).send( { auth : true, token : token } );
+		res.status( 200 ).send( { auth : true, token : token, user: user.toJSON() } );
 	} );
 } );
 
