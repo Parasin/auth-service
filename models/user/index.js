@@ -1,69 +1,70 @@
 const mongoose = require( 'mongoose' ),
-			bcrypt   = require( 'bcrypt' );
+      bcrypt   = require( 'bcrypt' );
 
 let userSchema = mongoose.Schema( {
-	userName : {
-		type      : String,
-		required  : true,
-		unique    : true,
-		lowercase : true,
-		index     : true
-	},
+  userName : {
+    type      : String,
+    required  : true,
+    unique    : true,
+    lowercase : true,
+    index     : true
+  },
 
-	password : {
-		type     : String,
-		required : true
-	},
+  password : {
+    type     : String,
+    required : true
+  },
 
-	email : {
-		type      : String,
-		required  : true,
-		unique    : true,
-		lowercase : true,
-		index     : true
-	},
+  email : {
+    type      : String,
+    required  : true,
+    unique    : true,
+    lowercase : true,
+    index     : true
+  },
 
-	firstName : {
-		type : String
-	},
+  firstName : {
+    type     : String,
+    required : true
+  },
 
-	lastName : {
-		type : String
-	},
+  lastName : {
+    type     : String,
+    required : true
+  },
 
-	age : {
-		type     : Number,
-		required : true
-	},
+  age : {
+    type : Number
+  },
 
-	gender : {
-		type : String
-	},
+  gender : {
+    type : String
+  },
 
-	primaryPhone : {
-		type : String
-	},
+  primaryPhone : {
+    type : String
+  },
 
-	lastLogin : {
-		type    : Date,
-		default : Date.now()
-	}
+  lastLogin : {
+    type    : Date,
+    default : Date.now()
+  }
 } );
 
 userSchema.methods.hashPass = function () {
-	this.password = bcrypt.hashSync( this.password, 8 );
-	return this;
+  this.password = bcrypt.hashSync( this.password, 8 );
+  return this;
 };
 
 userSchema.methods.toJSON = function () {
-	let obj = this.toObject();
-	delete obj.password;
-	delete obj.__v;
-	return obj;
+  let obj = this.toObject();
+  delete obj.password;
+  delete obj.__v;
+  return obj;
 };
 
 userSchema.methods.comparePass = function ( password ) {
-	return bcrypt.compareSync( password, this.password );
+  return bcrypt.compareSync( password, this.password );
 };
 
 module.exports = mongoose.model( 'User', userSchema );
