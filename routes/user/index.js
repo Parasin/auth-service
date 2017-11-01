@@ -69,7 +69,7 @@ router.put( '/:id', tokenUtil.isAuthenticated, ( req, res ) => {
       } else if ( !user ) {
         return res.status( 404 ).send( { error : 'No user found' } );
       }
-      console.log( user );
+
       return res.send( user );
     } );
   } );
@@ -95,7 +95,7 @@ router.delete( '/:id', tokenUtil.isAuthenticated, ( req, res ) => {
 
 //POST
 router.post( '/', ( req, res ) => {
-  let body = req.body;
+  let body = _.pick( req.body, 'firstName', 'lastName', 'password', 'age', 'gender', 'email', 'primaryPhone', 'userName' );
 
   if ( !body ) {
     return res.status( 400 ).send( {
@@ -112,7 +112,7 @@ router.post( '/', ( req, res ) => {
       return res.status( 500 ).send( err );
     } else {
       let token = tokenUtil.sign( user.toJSON(), 86400 );
-      return res.status( 201 ).send( { auth : true, token : token } );
+      return res.status( 201 ).send( { auth : true, token : token, user: user.toJSON() } );
     }
   } );
 } );
